@@ -1,0 +1,22 @@
+name: 🚀 Deploy website on push
+on:
+  push:
+    branches: [ staging ]
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Upload from public_html via FTP
+        uses: actions/checkout@v2
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local_dir: "./public_html"
+          delete: "false"
